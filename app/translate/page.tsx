@@ -1,11 +1,15 @@
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import React from 'react';
+import { TranslationsPageComponent } from './_components/translations-page';
 
 const TranslatePage: React.FC = () => {
     return (
+        <ProtectedRoute>
         <div>
-            <h1>Translate Page</h1>
-            <p>Welcome to the translation page!</p>
+
+            <TranslationsPageComponent />
         </div>
+        </ProtectedRoute>
     );
 };
 
