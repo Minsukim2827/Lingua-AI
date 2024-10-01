@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import HomepageComponent from './home/page';
 
 
