@@ -1,0 +1,1 @@
+export type VoiceName = "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer";
