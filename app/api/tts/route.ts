@@ -1,22 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { voiceNames } from '@/utils/voiceName';
+import { VoiceName } from '@/types/voicetypes';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// Mapping of voice names to OpenAI voice IDs
-const voiceNames = {
-  "alloy": "alloy",
-  "echo": "echo",
-  "fable": "fable",
-  "onyx": "onyx",
-  "nova": "nova",
-  "shimmer": "shimmer"
-};
 
 export async function POST(request: NextRequest) {
-  const { text, voice } = await request.json();
+  const { text, voice } = await request.json() as { text: string; voice: VoiceName };
 
   const voiceName = voiceNames[voice] || 'alloy';
 

@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { ChevronDown, Save, Volume2 } from "lucide-react";
+import { createClient } from '@/utils/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
+import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { useVoices } from '@/hooks/useVoices';
 
 const languages = [
   "English", "Mandarin", "Hindi", "Spanish", "French",
@@ -11,94 +16,42 @@ const languages = [
   "Telugu", "Turkish", "Tamil", "Yue Chinese", "Vietnamese"
 ];
 
-const voices = ["alloy", "echo", "fable", "onyx", "nova", "shimmer"];
-
-// Mapping of language names to codes (if needed)
-const languageCodes = {
-  "English": "en",
-  "Mandarin": "zh",
-  "Hindi": "hi",
-  "Spanish": "es",
-  "French": "fr",
-  "Arabic": "ar",
-  "Bengali": "bn",
-  "Russian": "ru",
-  "Portuguese": "pt",
-  "Indonesian": "id",
-  "Urdu": "ur",
-  "German": "de",
-  "Japanese": "ja",
-  "Swahili": "sw",
-  "Marathi": "mr",
-  "Telugu": "te",
-  "Turkish": "tr",
-  "Tamil": "ta",
-  "Yue Chinese": "yue",
-  "Vietnamese": "vi"
-};
-
 export function TranslationsPageComponent() {
   const [inputText, setInputText] = useState("");
-  const [outputText, setOutputText] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-  const [selectedVoice, setSelectedVoice] = useState(voices[0]);
 
-  const handleTranslate = async () => {
+  const supabase = createClient();
+  const { user } = useAuth();
+
+  const { outputText, handleTranslate } = useTranslation();
+  const { selectedVoice, setSelectedVoice, handleTextToSpeech } = useTextToSpeech();
+  const voices = useVoices();
+
+
+  const handleSave = async () => {
+    if (!user) {
+      console.error('User not logged in');
+      return;
+    }
+
     try {
-      const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          inputText,
-          language: selectedLanguage
-        })
+      const { error } = await supabase.from('translations').insert({
+        user_uuid: user.id,
+        text: inputText,
+        translatedtext: outputText,
+        language: selectedLanguage,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setOutputText(data.translatedText);
+      if (error) {
+        console.error('Error saving translation:', error);
       } else {
-        const errorData = await response.json();
-        console.error('Translation failed:', errorData.error);
+        console.log('Translation saved successfully');
       }
     } catch (error) {
-      console.error('An error occurred during translation:', error);
+      console.error('An error occurred while saving the translation:', error);
     }
   };
 
-  const handleTextToSpeech = async () => {
-    try {
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          text: outputText,
-          voice: selectedVoice
-        })
-      });
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const audioUrl = URL.createObjectURL(blob);
-        const audio = new Audio(audioUrl);
-        audio.play();
-      } else {
-        const errorData = await response.json();
-        console.error('Text-to-speech failed:', errorData.error);
-      }
-    } catch (error) {
-      console.error('An error occurred during text-to-speech:', error);
-    }
-  };
-
-  const handleSave = () => {
-    // Implement save functionality here
-    console.log("Saving translation:", outputText);
-  };
   
 
   return (
@@ -150,7 +103,7 @@ export function TranslationsPageComponent() {
             </div>
           </Listbox>
           <button
-            onClick={handleTranslate}
+            onClick={() => handleTranslate(inputText, selectedLanguage)}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Translate
@@ -200,7 +153,7 @@ export function TranslationsPageComponent() {
               </div>
             </Listbox>
             <button
-              onClick={handleTextToSpeech}
+              onClick={() => handleTextToSpeech(outputText)}
               className="p-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
               aria-label="Play translation"
             >
