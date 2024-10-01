@@ -57,6 +57,7 @@ export function NavbarComponent() {
                   {item.name}
                 </a>
               ))}
+              <Link href="/login">
               <Button variant="outline">Login</Button>
               {mounted && (
                 <Button
@@ -67,7 +68,9 @@ export function NavbarComponent() {
                 >
                   {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </Button>
+                
               )}
+              </Link>
             </div>
           </div>
           <div className="md:hidden flex items-center space-x-2">
