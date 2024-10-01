@@ -7,6 +7,8 @@ import { useTheme } from 'next-themes'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, Moon, Sun } from 'lucide-react'
+import LoginButton from './LoginLogoutButton'
+import UserGreetText from './UserGreetText'
 
 export function NavbarComponent() {
   const [mounted, setMounted] = useState(false)
@@ -21,7 +23,7 @@ export function NavbarComponent() {
     { name: 'Home', href: '/' },
     { name: 'About', href: '/#about' },
     { name: 'Translate', href: '/translate' },
-    { name: 'My Translations', href: '/my-translations' },
+    { name: 'My Translations', href: '/mytranslations' },
   ]
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -57,7 +59,11 @@ export function NavbarComponent() {
                   {item.name}
                 </a>
               ))}
-              <Button variant="outline">Login</Button>
+
+              <div className="flex flex-row gap-2 items-center justify-center">
+              <UserGreetText/>
+              <LoginButton/>
+              
               {mounted && (
                 <Button
                   variant="ghost"
@@ -67,7 +73,9 @@ export function NavbarComponent() {
                 >
                   {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </Button>
+                
               )}
+</div>
             </div>
           </div>
           <div className="md:hidden flex items-center space-x-2">

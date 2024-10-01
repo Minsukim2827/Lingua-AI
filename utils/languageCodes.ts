@@ -1,0 +1,20 @@
+export const languageCodes: Record<string, string> = {
+    English: 'en',
+    Mandarin: 'zh',
+    Hindi: 'hi',
+    Spanish: 'es',
+    French: 'fr',
+    Arabic: 'ar',
+    Bengali: 'bn',
+    Russian: 'ru',
+    Portuguese: 'pt',
+    Indonesian: 'id',
+    Urdu: 'ur',
+    German: 'de',
+    Japanese: 'ja',
+    Korean: 'ko',
+    Italian: 'it',
+    Dutch: 'nl',
+    Turkish: 'tr',
+    Vietnamese: 'vi'
+  };
