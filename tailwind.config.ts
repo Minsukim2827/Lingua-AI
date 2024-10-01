@@ -9,6 +9,39 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		backgroundColor: {
+			bgtheme: '#060606',
+		  },
+		width: {
+			p1: '100px',
+			p2: '200px',
+			p3: '300px',
+			p4: '400px',
+			p5: '500px',
+			p6: '600px',
+			p7: '700px',
+			p8: '800px',
+			p9: '900px',
+			p10: '1000px',
+			p11: '1100px',
+			p12: '1200px',
+			p13: '1300px'
+		},
+		maxWidth: {
+			p1: '100px',
+			p2: '200px',
+			p3: '300px',
+			p4: '400px',
+			p5: '500px',
+			p6: '600px',
+			p7: '700px',
+			p8: '800px',
+			p9: '900px',
+			p10: '1000px',
+			p11: '1100px',
+			p12: '1200px',
+			p13: '1300px'
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-
+import Link from 'next/link';
+import HomepageComponent from './home/page';
 
 
 export default function Home() {
   return (
     <div>
-<Button>Click me</Button>
+<HomepageComponent />
     </div>
   );
 }
