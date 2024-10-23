@@ -8,8 +8,6 @@ export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  // TODO: server-side validation
-
   const pb = new PocketBase(process.env.POCKETBASE_URL);
 
   const { token, record: model } = await pb
@@ -25,7 +23,7 @@ export async function login(formData: FormData) {
     httpOnly: true,
   });
 
-  redirect('/dashboard');
+  redirect('/Dashboard');
 }
 
 export async function logout() {

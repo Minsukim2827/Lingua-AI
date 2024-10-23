@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider"
 
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -15,11 +16,11 @@ export const metadata: Metadata = {
   description: "nextjs14",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
 
@@ -27,14 +28,18 @@ export default function RootLayout({
       <ThemeProvider
             attribute="class"
             defaultTheme="system"
-            enableSystem
+            enableSystem={true}
             disableTransitionOnChange
           >
+            
       <Header />
         {children}
         <Footer />
+        
         </ThemeProvider>
       </body>
+      
     </html>
+
   );
 }
