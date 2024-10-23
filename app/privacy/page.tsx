@@ -1,5 +1,3 @@
-// app/privacy/page.tsx
-
 import PrivacyHead from "./_components/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -70,7 +68,7 @@ const PrivacyPage = () => {
                   <li><strong>Legal Requirements:</strong> When required by law or to protect our rights.</li>
                 </ul>
                 <p className="mt-4">
-                  <strong>Stripe:</strong> All payment transactions are processed securely through Stripe. We do not store your payment information on our servers. For more details, please refer to Stripe's Privacy Policy.
+                  <strong>Stripe:</strong> All payment transactions are processed securely through Stripe. We do not store your payment information on our servers. For more details, please refer to Stripe&apos;s Privacy Policy.
                 </p>
               </CardContent>
             </Card>

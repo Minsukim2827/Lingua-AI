@@ -19,7 +19,7 @@ const TermsPage = () => {
               </CardHeader>
               <CardContent>
                 <p>
-                  Welcome to LinguaAI. These Terms of Service ("Terms") govern your use of our website and services ("Service"). By accessing or using our Service, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, please do not use our Service.
+                  Welcome to LinguaAI. These Terms of Service (&quot;Terms&quot;) govern your use of our website and services (&quot;Service&quot;). By accessing or using our Service, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, please do not use our Service.
                 </p>
               </CardContent>
             </Card>
@@ -31,10 +31,10 @@ const TermsPage = () => {
               </CardHeader>
               <CardContent>
                 <p>
-                  <strong>"Service"</strong> refers to the translation tools and related services provided by LinguaAI.
+                  <strong>&quot;Service&quot;</strong> refers to the translation tools and related services provided by LinguaAI.
                 </p>
                 <p className="mt-4">
-                  <strong>"User"</strong> refers to any individual or entity that accesses or uses the Service.
+                  <strong>&quot;User&quot;</strong> refers to any individual or entity that accesses or uses the Service.
                 </p>
               </CardContent>
             </Card>
@@ -103,7 +103,7 @@ const TermsPage = () => {
               </CardHeader>
               <CardContent>
                 <p>
-                  The Service is provided "as is" and "as available" without warranties of any kind, either express or implied. LinguaAI does not warrant that the Service will be uninterrupted, error-free, or free from viruses or other harmful components.
+                  The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or implied. LinguaAI does not warrant that the Service will be uninterrupted, error-free, or free from viruses or other harmful components.
                 </p>
                 <p className="mt-4">
                   In no event shall LinguaAI be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
