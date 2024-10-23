@@ -1,0 +1,10 @@
+in directory:
+
+build your container through docker-compose
+docker-compose up --build
+
+#Verifying Container Status
+docker ps
+
+#close docker images defined in docker compose
+docker-compose down
