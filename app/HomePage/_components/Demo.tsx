@@ -8,7 +8,7 @@ const Demo = () => {
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12">See LinguaAI in Action</h2>
         <div className="aspect-video max-w-4xl mx-auto bg-zinc-800 rounded-xl flex items-center justify-center">
-          <p className="text-zinc-400">Demo Video Placeholder</p>
+          <p className="text-zinc-400">Demo Video</p>
         </div>
         <div className="mt-10 text-center">
           <Button asChild size="lg">
