@@ -1,49 +1,66 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { login } from '@/app/actions';
+import { useAuth } from '@/context/AuthContext';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import ky from 'ky';  // Ky for HTTP requests
 
 export default function SignupPageComponent() {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const router = useRouter()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);  // Loading state
+  const [success, setSuccess] = useState('');  // Success message state
+  const { login } = useAuth()
+  const router = useRouter();  // for navigation
 
+  // Form submission handler
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError('');  // Reset error state
+    setIsLoading(true);  // Show loading
 
-    if (!username || !email || !password || !confirmPassword) {
-      setError('All fields are required')
-      return
+    // Form validation
+    if (!email || !password || !confirmPassword) {
+      setError('All fields are required');
+      setIsLoading(false);
+      return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
-      return
+      setError('Passwords do not match');
+      setIsLoading(false);
+      return;
     }
 
-    // Here you would typically make an API call to your backend for user registration
-    // For this example, we'll just simulate a successful signup
     try {
-      // Simulating an API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Make the signup request using Ky
+      await ky.post('/api/auth/signup', {
+        json: { email, password }  // Sending the form data
+      });
+
+      // Show success message
+      setSuccess('Signup successful! Redirecting...');
       
-      console.log('Signup successful', { username, email })
-      router.push('/dashboard') // Redirect to dashboard after successful signup
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      setError('Failed to sign up. Please try again.')
+      // Redirect to Dashboard after a brief delay
+      setTimeout(() => {
+        router.refresh();  // Re-fetch current data
+        router.push('/Dashboard');
+      }, 1500);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setError(error.message || 'Signup failed. Please try again.');
+    } finally {
+      setIsLoading(false);  // Stop loading
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
@@ -54,17 +71,6 @@ export default function SignupPageComponent() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="Choose a username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -77,7 +83,7 @@ export default function SignupPageComponent() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label>Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -88,7 +94,7 @@ export default function SignupPageComponent() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label>Confirm Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -103,7 +109,14 @@ export default function SignupPageComponent() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            <Button type="submit" className="w-full">Sign Up</Button>
+            {success && (
+              <Alert variant="default">
+                <AlertDescription>{success}</AlertDescription>
+              </Alert>
+            )}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Signing Up...' : 'Sign Up'}
+            </Button>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
@@ -116,5 +129,5 @@ export default function SignupPageComponent() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

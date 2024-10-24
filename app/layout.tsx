@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider"
+import { AuthProvider } from '@/components/AuthProvider';
 
 
 const inter = Inter({
@@ -25,18 +26,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
 
       <body className={`${inter.variable} font-sans antialiased`}>
+      <AuthProvider>
       <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem={true}
             disableTransitionOnChange
           >
+
             
       <Header />
         {children}
         <Footer />
-        
+
         </ThemeProvider>
+       </AuthProvider>
       </body>
       
     </html>
