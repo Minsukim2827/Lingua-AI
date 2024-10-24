@@ -1,14 +1,7 @@
 import { create } from 'zustand';
 import pb, { collections } from '@/lib/pocketbase';
 import { User } from '@/types/auth';
-
-interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  checkAuth: () => Promise<void>;
-}
+import { AuthState } from '@/types/AuthState';
 
 export const useAuth = create<AuthState>((set) => ({
   user: null,
@@ -52,11 +45,45 @@ export const useAuth = create<AuthState>((set) => ({
       }
   },
 
+  signup: async (email: string, password: string) => {
+    try {
+      set({ isLoading: true });
+      
+      const data = {
+        email,
+        password,
+        passwordConfirm: password,
+      };
+      
+      const createdUser = await collections.users.create(data);
+      
+      // After creating user, log them in
+      const authData = await collections.users.authWithPassword<User>(
+        email,
+        password
+      );
+
+      if (!authData?.record) {
+        throw new Error('Authentication failed after signup');
+      }
+
+      set({
+        user: authData.record,
+        isLoading: false
+      });
+
+      window.dispatchEvent(new Event('auth-change'));
+      return createdUser;
+    } catch (error) {
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
   checkAuth: async () => {
       try {
           set({ isLoading: true });
           if (pb.authStore.isValid && pb.authStore.model) {
-              // Type assertion here is safe because we've verified the auth store is valid
               const user = pb.authStore.model as User;
               set({ user, isLoading: false });
           } else {
