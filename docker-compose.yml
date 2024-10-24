@@ -14,20 +14,6 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - ./public/uploads:/app/public/uploads  # Local storage for uploads
+      - ./public/uploads:/app/public/uploads  
     restart: unless-stopped
 
-  pocketbase:
-    build:
-      context: .
-      dockerfile: Dockerfile.pocketbase
-    ports:
-      - '8080:8080'
-    volumes:
-      - pocketbase_data:/pb_data  # Persist PocketBase data
-    env_file:
-      - .env
-    restart: unless-stopped
-
-volumes:
-  pocketbase_data:
