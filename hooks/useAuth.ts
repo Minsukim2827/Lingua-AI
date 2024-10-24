@@ -45,7 +45,7 @@ export const useAuth = create<AuthState>((set) => ({
       }
   },
 
-  signup: async (email: string, password: string) => {
+  signup: async (email: string, password: string): Promise<void> => {
     try {
       set({ isLoading: true });
       
@@ -54,9 +54,9 @@ export const useAuth = create<AuthState>((set) => ({
         password,
         passwordConfirm: password,
       };
-      
-      const createdUser = await collections.users.create(data);
-      
+
+      await collections.users.create(data);
+    
       // After creating user, log them in
       const authData = await collections.users.authWithPassword<User>(
         email,
@@ -73,7 +73,6 @@ export const useAuth = create<AuthState>((set) => ({
       });
 
       window.dispatchEvent(new Event('auth-change'));
-      return createdUser;
     } catch (error) {
       set({ isLoading: false });
       throw error;
