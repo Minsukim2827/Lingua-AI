@@ -3,12 +3,15 @@
 import Image from "next/image"
 import AboutHead from "./_components/head"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 const AboutPage = () => {
   return (
     <>
       <AboutHead />
       <div className="flex flex-col min-h-screen">
+        <Header />
         <main className="flex-grow py-20 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto max-w-4xl">
             {/* Company Overview */}
@@ -66,6 +69,7 @@ const AboutPage = () => {
             </section>
           </div>
         </main>
+        <Footer />
       </div>
     </>
   )

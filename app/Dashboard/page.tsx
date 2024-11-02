@@ -1,17 +1,33 @@
-import { cookies } from 'next/headers';
+'use client'
 
-export default function Page() {
-  const cookie = cookies().get('pb_auth');
+import { useState } from 'react'
+import Sidebar from '@/components/sidebar'
+import MainDashboard from '@/components/main-dashboard'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
-  if (!cookie) throw new Error('Not logged in');
+export default function Dashboard() {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true)
+  const [activeTab, setActiveTab] = useState('dashboard')
 
-  const { model } = JSON.parse(cookie.value);
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded)
+  }
+
 
   return (
-    <main>
-      <p>This is the dashboard. Only logged-in users can view this route</p>
-      <p>Logged-in user: </p>
-      <pre>{JSON.stringify(model, null, 2)}</pre>
-    </main>
-  );
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+      <Header />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar
+          isExpanded={isSidebarExpanded}
+          toggleSidebar={toggleSidebar}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+        <MainDashboard activeTab={activeTab} />
+      </div>
+      <Footer />
+    </div>
+  )
 }
