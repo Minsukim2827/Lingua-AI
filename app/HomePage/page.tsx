@@ -1,6 +1,6 @@
 
 import Hero from "./_components/Hero";
-import Features from "@/components/Features";
+import Features from "./_components/Features";
 import Demo from "./_components/Demo";
 import Pricing from "./_components/Pricing";
 import Header from "@/components/Header";

@@ -1,21 +1,34 @@
-import { FileText, FolderOpen, Clock } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
+'use client';
+
+import { FileText, FolderOpen, Clock } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface MainDashboardProps {
-  activeTab: string
+  userData: {
+    totalTranslations: number;
+    collections: number;
+    recentTranslations: Array<{
+      id: number;
+      text: string;
+      from: string;
+      to: string;
+      date: string;
+    }>;
+  };
 }
 
-export default function MainDashboard({ activeTab }: MainDashboardProps) {
-  const stats = [
-    { icon: FileText, label: 'Total Translations', value: '1,234' },
-    { icon: FolderOpen, label: 'Collections', value: '56' },
-  ]
+export default function MainDashboard({ userData }: MainDashboardProps) {
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
-  const recentTranslations = [
-    { id: 1, text: 'Hello world', from: 'English', to: 'Spanish', date: '2024-03-01' },
-    { id: 2, text: 'Good morning', from: 'English', to: 'French', date: '2024-02-28' },
-    { id: 3, text: 'Thank you', from: 'English', to: 'German', date: '2024-02-27' },
-  ]
+  const stats = [
+    { icon: FileText, label: 'Total Translations', value: userData.totalTranslations },
+    { icon: FolderOpen, label: 'Collections', value: userData.collections },
+  ];
+
+  const { recentTranslations } = userData;
 
   return (
     <main className="flex-1 overflow-y-auto p-4 md:p-8 bg-gray-100 dark:bg-gray-900">
@@ -24,9 +37,7 @@ export default function MainDashboard({ activeTab }: MainDashboardProps) {
         {stats.map((stat, index) => (
           <Card key={index}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stat.label}
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
               <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -59,5 +70,5 @@ export default function MainDashboard({ activeTab }: MainDashboardProps) {
         </CardContent>
       </Card>
     </main>
-  )
+  );
 }
