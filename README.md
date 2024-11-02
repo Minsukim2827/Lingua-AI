@@ -1,4 +1,8 @@
 my auth is a bit ??? so bare with me triyng to get this deployed live.
+To be added:
+- Stripe
+- Voice to text
+- Voice to Voice
 
 In the meantime, here are some pictures:
 
