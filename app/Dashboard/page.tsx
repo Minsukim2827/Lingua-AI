@@ -71,6 +71,11 @@ export default function Dashboard() {
   };
 
   const renderContent = () => {
+
+    if (!userData) {
+      return <div>Loading...</div>;
+    }
+
     switch (activeTab) {
       case 'dashboard':
         return <MainDashboard userData={userData} />;
@@ -86,7 +91,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex flex-col min-h-screen">
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar

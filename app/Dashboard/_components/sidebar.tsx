@@ -18,7 +18,7 @@ export default function Sidebar({ isExpanded, toggleSidebar, activeTab, setActiv
 
   return (
     <aside
-      className={`bg-white dark:bg-gray-800 shadow-md transition-all duration-300 ease-in-out ${
+      className={` shadow-md transition-all duration-300 ease-in-out ${
         isExpanded ? 'w-64' : 'w-20'
       } flex flex-col`}
     >
