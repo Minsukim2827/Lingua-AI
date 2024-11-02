@@ -1,6 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
+import ky from 'ky'; 
+
 import Sidebar from './_components/sidebar'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -12,41 +15,56 @@ import Collections from './_components/Collections';
 interface UserData {
   name: string;
   totalTranslations: number;
-  collections: number;
+  collectionsCount: number;
   recentTranslations: Translation[];
+  allTranslations: Translation[];
+  collections: Collection[];
 }
 
 interface Translation {
   id: number;
-  text: string;
-  from: string;
-  to: string;
+  input: string;
+  output: string;
+  language: string;
+  tone: string;
   date: string;
 }
 
+interface Collection {
+  id: number;
+  name: string;
+  date: string;
+}
+
+
 export default function Dashboard() {
+  const { user } = useUser();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userData, setUserData] = useState<UserData | null>(null);
 
-  // Simulate API call to fetch user data
   useEffect(() => {
-    // Simulate an API call with setTimeout
-    setTimeout(() => {
-      const mockUserData = {
-        name: 'John Doe',
-        totalTranslations: 1234,
-        collections: 56,
-        recentTranslations: [
-          { id: 1, text: 'Hello world', from: 'English', to: 'Spanish', date: '2024-03-01' },
-          { id: 2, text: 'Good morning', from: 'English', to: 'French', date: '2024-02-28' },
-          { id: 3, text: 'Thank you', from: 'English', to: 'German', date: '2024-02-27' },
-        ],
-        // Add more mock data as needed
+    if (user) {
+      // Fetch user data from the backend
+      const fetchData = async () => {
+        try {
+          const response: UserData = await ky
+            .post('/api/user-data', {
+              json: {
+                clerkId: user.id,
+              },
+            })
+            .json();
+
+          setUserData(response);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
       };
-      setUserData(mockUserData);
-    }, 1000); // Simulate 1 second delay
-  }, []);
+
+      fetchData();
+    }
+  }, [user]);
 
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
@@ -57,11 +75,11 @@ export default function Dashboard() {
       case 'dashboard':
         return <MainDashboard userData={userData} />;
       case 'translations':
-        return <MyTranslations userData={userData} />;
+        return <MyTranslations translations={userData?.allTranslations || []} />;
       case 'new':
-        return <NewTranslation userData={userData} />;
+        return <NewTranslation />;
       case 'collections':
-        return <Collections userData={userData} />;
+        return <Collections collections={userData?.collections || []} />;
       default:
         return <MainDashboard userData={userData} />;
     }
