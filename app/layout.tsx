@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/theme-provider"
+import {ClerkProvider} from '@clerk/nextjs'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -14,19 +14,34 @@ export const metadata: Metadata = {
   description: "nextjs14",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
+    <ClerkProvider>
     <html lang="en">
-      
+
       <body className={`${inter.variable} font-sans antialiased`}>
-      <Header />
+
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={true}
+            disableTransitionOnChange
+          >
+
+            
+
         {children}
-        <Footer />
+
+
+        </ThemeProvider>
+
       </body>
+      
     </html>
+    </ClerkProvider>
   );
 }

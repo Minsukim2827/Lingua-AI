@@ -1,11 +1,14 @@
+import Header from "@/components/Header";
 import PrivacyHead from "./_components/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Footer from "@/components/Footer";
 
 const PrivacyPage = () => {
   return (
     <>
       <PrivacyHead />
       <div className="flex flex-col min-h-screen">
+        <Header />
         <main className="flex-grow py-20 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto max-w-4xl">
             <h1 className="text-4xl font-extrabold mb-10 text-center">Privacy Policy</h1>
@@ -153,6 +156,7 @@ const PrivacyPage = () => {
             </Card>
           </div>
         </main>
+        <Footer   />
       </div>
     </>
   );
